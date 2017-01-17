@@ -51,7 +51,7 @@
 /******/ 	// "0" means "already loaded"
 /******/ 	// Array means "loading", array contains callbacks
 /******/ 	var installedChunks = {
-/******/ 		23:0
+/******/ 		24:0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -97,7 +97,7 @@
 /******/ 			script.charset = 'utf-8';
 /******/ 			script.async = true;
 /******/
-/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"animation","1":"childrenIndent","2":"className","3":"colspan-rowspan","4":"dropdown","5":"expandedRowRender","6":"fixedColumns","7":"fixedColumns-auto-height","8":"fixedColumnsAndHeader","9":"fixedColumnsAndHeaderSyncRowHeight","10":"grouping-columns","11":"hide-header","12":"jsx","13":"key","14":"nested","15":"no-data","16":"rowAndCellClick","17":"scrollX","18":"scrollXY","19":"scrollY","20":"simple","21":"subTable","22":"title-and-footer"}[chunkId]||chunkId) + ".js";
+/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"animation","1":"childrenIndent","2":"className","3":"colspan-rowspan","4":"dropdown","5":"expandedRowRender","6":"fixedColumns","7":"fixedColumns-auto-height","8":"fixedColumnsAndHeader","9":"fixedColumnsAndHeaderAndEndRows","10":"fixedColumnsAndHeaderSyncRowHeight","11":"grouping-columns","12":"hide-header","13":"jsx","14":"key","15":"nested","16":"no-data","17":"rowAndCellClick","18":"scrollX","19":"scrollXY","20":"scrollY","21":"simple","22":"subTable","23":"title-and-footer"}[chunkId]||chunkId) + ".js";
 /******/ 			head.appendChild(script);
 /******/ 		}
 /******/ 	};
@@ -432,8 +432,15 @@
 /* 7 */
 /***/ function(module, exports) {
 
+	/*
+	object-assign
+	(c) Sindre Sorhus
+	@license MIT
+	*/
+	
 	'use strict';
 	/* eslint-disable no-unused-vars */
+	var getOwnPropertySymbols = Object.getOwnPropertySymbols;
 	var hasOwnProperty = Object.prototype.hasOwnProperty;
 	var propIsEnumerable = Object.prototype.propertyIsEnumerable;
 	
@@ -454,7 +461,7 @@
 			// Detect buggy property enumeration order in older V8 versions.
 	
 			// https://bugs.chromium.org/p/v8/issues/detail?id=4118
-			var test1 = new String('abc');  // eslint-disable-line
+			var test1 = new String('abc');  // eslint-disable-line no-new-wrappers
 			test1[5] = 'de';
 			if (Object.getOwnPropertyNames(test1)[0] === '5') {
 				return false;
@@ -483,7 +490,7 @@
 			}
 	
 			return true;
-		} catch (e) {
+		} catch (err) {
 			// We don't expect any of the above to throw, but better to be safe.
 			return false;
 		}
@@ -503,8 +510,8 @@
 				}
 			}
 	
-			if (Object.getOwnPropertySymbols) {
-				symbols = Object.getOwnPropertySymbols(from);
+			if (getOwnPropertySymbols) {
+				symbols = getOwnPropertySymbols(from);
 				for (var i = 0; i < symbols.length; i++) {
 					if (propIsEnumerable.call(from, symbols[i])) {
 						to[symbols[i]] = from[symbols[i]];
@@ -714,7 +721,7 @@
 
 /***/ },
 /* 9 */
-[321, 10],
+[322, 10],
 /* 10 */
 /***/ function(module, exports) {
 
@@ -6428,7 +6435,7 @@
 
 /***/ },
 /* 55 */
-[321, 40],
+[322, 40],
 /* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -21192,6 +21199,7 @@
 	    expandedRowKeys: _react.PropTypes.array,
 	    defaultExpandedRowKeys: _react.PropTypes.array,
 	    useFixedHeader: _react.PropTypes.bool,
+	    fixedEndRowCount: _react.PropTypes.number,
 	    columns: _react.PropTypes.array,
 	    prefixCls: _react.PropTypes.string,
 	    bodyStyle: _react.PropTypes.object,
@@ -21270,11 +21278,22 @@
 	    } else {
 	      expandedRowKeys = props.expandedRowKeys || props.defaultExpandedRowKeys;
 	    }
+	
+	    var end = props.fixedEndRowCount;
+	    var data = props.data;
+	    var endData = null;
+	
+	    if (end && end > 0) {
+	      endData = props.data.slice(-end);
+	    }
+	
 	    return {
 	      expandedRowKeys: expandedRowKeys,
-	      data: props.data,
+	      data: data,
+	      endData: endData,
 	      currentHoverKey: null,
 	      scrollPosition: 'left',
+	      scrollYPosition: 'top',
 	      fixedColumnsHeadRowsHeight: [],
 	      fixedColumnsBodyRowsHeight: []
 	    };
@@ -21288,9 +21307,18 @@
 	    }
 	  },
 	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-	    if ('data' in nextProps) {
+	    if ('data' in nextProps || 'fixedEndRowCount' in nextProps) {
+	      var end = nextProps.fixedEndRowCount;
+	      var data = nextProps.data;
+	      var endData = null;
+	
+	      if (end && end > 0) {
+	        endData = nextProps.data.slice(-end);
+	      }
+	
 	      this.setState({
-	        data: nextProps.data
+	        data: data,
+	        endData: endData
 	      });
 	      if (!nextProps.data || nextProps.data.length === 0) {
 	        this.resetScrollY();
@@ -21554,7 +21582,9 @@
 	    return rst;
 	  },
 	  getRows: function getRows(columns, fixed) {
-	    return this.getRowsByData(this.state.data, true, 0, columns, fixed);
+	    var isEnd = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+	
+	    return this.getRowsByData(isEnd ? this.state.endData : this.state.data, true, 0, columns, fixed);
 	  },
 	  getColGroup: function getColGroup(columns, fixed) {
 	    var cols = [];
@@ -21604,15 +21634,20 @@
 	        _props3$scroll = _props3.scroll,
 	        scroll = _props3$scroll === undefined ? {} : _props3$scroll,
 	        getBodyWrapper = _props3.getBodyWrapper;
-	    var useFixedHeader = this.props.useFixedHeader;
+	    var _props4 = this.props,
+	        useFixedHeader = _props4.useFixedHeader,
+	        useFixedFooter = _props4.useFixedFooter;
 	
 	    var bodyStyle = _extends({}, this.props.bodyStyle);
 	    var headStyle = {};
+	    var endStyle = {};
 	
 	    var tableClassName = '';
 	    if (scroll.x || fixed) {
 	      tableClassName = prefixCls + '-fixed';
 	      bodyStyle.overflowX = bodyStyle.overflowX || 'auto';
+	
+	      endStyle = _extends({}, bodyStyle);
 	    }
 	
 	    if (scroll.y) {
@@ -21629,14 +21664,25 @@
 	      // Add negative margin bottom for scroll bar overflow bug
 	      var scrollbarWidth = (0, _utils.measureScrollbar)();
 	      if (scrollbarWidth > 0) {
-	        (fixed ? bodyStyle : headStyle).marginBottom = '-' + scrollbarWidth + 'px';
-	        (fixed ? bodyStyle : headStyle).paddingBottom = '0px';
+	        var marginBottom = '-' + scrollbarWidth + 'px';
+	        var paddingBottom = '0px';
+	
+	        if (fixed) {
+	          bodyStyle.marginBottom = marginBottom;
+	          bodyStyle.paddingBottom = paddingBottom;
+	        } else {
+	          headStyle.marginBottom = marginBottom;
+	          headStyle.paddingBottom = paddingBottom;
+	
+	          endStyle.right = scrollbarWidth + 'px';
+	        }
 	      }
 	    }
 	
 	    var renderTable = function renderTable() {
 	      var hasHead = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
 	      var hasBody = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+	      var hasEnd = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
 	
 	      var tableStyle = {};
 	      if (!fixed && scroll.x) {
@@ -21650,7 +21696,7 @@
 	      var tableBody = hasBody ? getBodyWrapper(_react2.default.createElement(
 	        'tbody',
 	        { className: prefixCls + '-tbody' },
-	        _this2.getRows(columns, fixed)
+	        _this2.getRows(columns, fixed, hasEnd)
 	      )) : null;
 	      return _react2.default.createElement(
 	        'table',
@@ -21691,6 +21737,23 @@
 	      renderTable(!useFixedHeader)
 	    );
 	
+	    var endTable = void 0;
+	
+	    if (this.state.endData) {
+	      endTable = _react2.default.createElement(
+	        'div',
+	        {
+	          className: prefixCls + '-fixed-end',
+	          ref: fixed ? null : 'endTable',
+	          style: endStyle,
+	          onMouseOver: this.detectScrollTarget,
+	          onTouchStart: this.detectScrollTarget,
+	          onScroll: this.handleBodyScroll
+	        },
+	        renderTable(false, true, true)
+	      );
+	    }
+	
 	    if (fixed && columns.length) {
 	      var refName = void 0;
 	      if (columns[0].fixed === 'left' || columns[0].fixed === true) {
@@ -21724,13 +21787,14 @@
 	      'span',
 	      null,
 	      headTable,
-	      BodyTable
+	      BodyTable,
+	      endTable
 	    );
 	  },
 	  getTitle: function getTitle() {
-	    var _props4 = this.props,
-	        title = _props4.title,
-	        prefixCls = _props4.prefixCls;
+	    var _props5 = this.props,
+	        title = _props5.title,
+	        prefixCls = _props5.prefixCls;
 	
 	    return title ? _react2.default.createElement(
 	      'div',
@@ -21739,9 +21803,9 @@
 	    ) : null;
 	  },
 	  getFooter: function getFooter() {
-	    var _props5 = this.props,
-	        footer = _props5.footer,
-	        prefixCls = _props5.prefixCls;
+	    var _props6 = this.props,
+	        footer = _props6.footer,
+	        prefixCls = _props6.prefixCls;
 	
 	    return footer ? _react2.default.createElement(
 	      'div',
@@ -21750,10 +21814,10 @@
 	    ) : null;
 	  },
 	  getEmptyText: function getEmptyText() {
-	    var _props6 = this.props,
-	        emptyText = _props6.emptyText,
-	        prefixCls = _props6.prefixCls,
-	        data = _props6.data;
+	    var _props7 = this.props,
+	        emptyText = _props7.emptyText,
+	        prefixCls = _props7.prefixCls,
+	        data = _props7.data;
 	
 	    return !data.length ? _react2.default.createElement(
 	      'div',
@@ -21817,6 +21881,8 @@
 	    }
 	  },
 	  handleBodyScroll: function handleBodyScroll(e) {
+	    var _this4 = this;
+	
 	    // Prevent scrollTop setter trigger onScroll event
 	    // http://stackoverflow.com/q/1386696
 	    if (e.target !== this.scrollTarget) {
@@ -21827,23 +21893,43 @@
 	    var _refs = this.refs,
 	        headTable = _refs.headTable,
 	        bodyTable = _refs.bodyTable,
+	        endTable = _refs.endTable,
 	        fixedColumnsBodyLeft = _refs.fixedColumnsBodyLeft,
 	        fixedColumnsBodyRight = _refs.fixedColumnsBodyRight;
 	
 	    if (scroll.x && e.target.scrollLeft !== this.lastScrollLeft) {
-	      if (e.target === bodyTable && headTable) {
-	        headTable.scrollLeft = e.target.scrollLeft;
-	      } else if (e.target === headTable && bodyTable) {
-	        bodyTable.scrollLeft = e.target.scrollLeft;
-	      }
-	      if (e.target.scrollLeft === 0) {
-	        this.setState({ scrollPosition: 'left' });
-	      } else if (e.target.scrollLeft + 1 >= e.target.children[0].getBoundingClientRect().width - e.target.getBoundingClientRect().width) {
-	        this.setState({ scrollPosition: 'right' });
-	      } else if (this.state.scrollPosition !== 'middle') {
-	        this.setState({ scrollPosition: 'middle' });
-	      }
+	      (function () {
+	        var toUpdate = [headTable, bodyTable, endTable];
+	        toUpdate = toUpdate.filter(function (table) {
+	          return table;
+	        }); // only get tables that exist
+	
+	        var syncTableScroll = function syncTableScroll(checkTable) {
+	          toUpdate.filter(function (table) {
+	            return table !== checkTable;
+	          }).forEach(function (u) {
+	            u.scrollLeft = e.target.scrollLeft;
+	          });
+	        };
+	
+	        if (e.target === bodyTable) {
+	          syncTableScroll(bodyTable);
+	        } else if (e.target === headTable) {
+	          syncTableScroll(headTable);
+	        } else if (e.target === endTable) {
+	          syncTableScroll(endTable);
+	        }
+	
+	        if (e.target.scrollLeft === 0) {
+	          _this4.setState({ scrollPosition: 'left' });
+	        } else if (e.target.scrollLeft + 1 >= e.target.children[0].getBoundingClientRect().width - e.target.getBoundingClientRect().width) {
+	          _this4.setState({ scrollPosition: 'right' });
+	        } else if (_this4.state.scrollPosition !== 'middle') {
+	          _this4.setState({ scrollPosition: 'middle' });
+	        }
+	      })();
 	    }
+	
 	    if (scroll.y) {
 	      if (fixedColumnsBodyLeft && e.target !== fixedColumnsBodyLeft) {
 	        fixedColumnsBodyLeft.scrollTop = e.target.scrollTop;
@@ -21853,6 +21939,16 @@
 	      }
 	      if (bodyTable && e.target !== bodyTable) {
 	        bodyTable.scrollTop = e.target.scrollTop;
+	      }
+	
+	      var scrollbarWidth = (0, _utils.measureScrollbar)();
+	
+	      if (e.target.scrollTop === 0) {
+	        this.setState({ scrollPosition: 'top' });
+	      } else if (e.target.scrollTop - scrollbarWidth + 1 >= e.target.children[0].getBoundingClientRect().height - e.target.getBoundingClientRect().height) {
+	        this.setState({ scrollYPosition: 'bottom' });
+	      } else if (this.state.scrollYPosition !== 'middle') {
+	        this.setState({ scrollYPosition: 'middle' });
 	      }
 	    }
 	    // Remember last scrollLeft for scroll direction detecting.
@@ -21875,6 +21971,7 @@
 	      className += ' ' + prefixCls + '-fixed-header';
 	    }
 	    className += ' ' + prefixCls + '-scroll-position-' + this.state.scrollPosition;
+	    className += ' ' + prefixCls + '-scroll-y-position-' + this.state.scrollYPosition;
 	
 	    var isTableScroll = this.columnManager.isAnyColumnsFixed() || props.scroll.x || props.scroll.y;
 	
@@ -24235,7 +24332,7 @@
 	function warningOnce(condition, format, args) {
 	  if (!warned[format]) {
 	    (0, _warning2.default)(condition, format, args);
-	    warned[format] = true;
+	    warned[format] = !condition;
 	  }
 	}
 
@@ -24342,20 +24439,20 @@
 
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports['default'] = addEventListener;
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	exports["default"] = addEventListener;
 	
 	var _EventObject = __webpack_require__(205);
 	
 	var _EventObject2 = _interopRequireDefault(_EventObject);
 	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	
 	function addEventListener(target, eventType, callback) {
 	  function wrapCallback(e) {
-	    var ne = new _EventObject2['default'](e);
+	    var ne = new _EventObject2["default"](e);
 	    callback.call(target, ne);
 	  }
 	
@@ -24375,26 +24472,17 @@
 	    };
 	  }
 	}
-	
 	module.exports = exports['default'];
 
 /***/ },
 /* 205 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/**
-	 * @ignore
-	 * event object for dom
-	 * @author yiminghe@gmail.com
-	 */
-	
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
 	var _EventBaseObject = __webpack_require__(206);
 	
@@ -24403,6 +24491,14 @@
 	var _objectAssign = __webpack_require__(7);
 	
 	var _objectAssign2 = _interopRequireDefault(_objectAssign);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	
+	/**
+	 * @ignore
+	 * event object for dom
+	 * @author yiminghe@gmail.com
+	 */
 	
 	var TRUE = true;
 	var FALSE = false;
@@ -24438,9 +24534,9 @@
 	  reg: /^(mousewheel|DOMMouseScroll)$/,
 	  props: [],
 	  fix: function fix(event, nativeEvent) {
-	    var deltaX = undefined;
-	    var deltaY = undefined;
-	    var delta = undefined;
+	    var deltaX = void 0;
+	    var deltaY = void 0;
+	    var delta = void 0;
 	    var wheelDelta = nativeEvent.wheelDelta;
 	    var axis = nativeEvent.axis;
 	    var wheelDeltaY = nativeEvent.wheelDeltaY;
@@ -24513,9 +24609,9 @@
 	  reg: /^mouse|contextmenu|click|mspointer|(^DOMMouseScroll$)/i,
 	  props: ['buttons', 'clientX', 'clientY', 'button', 'offsetX', 'relatedTarget', 'which', 'fromElement', 'toElement', 'offsetY', 'pageX', 'pageY', 'screenX', 'screenY'],
 	  fix: function fix(event, nativeEvent) {
-	    var eventDoc = undefined;
-	    var doc = undefined;
-	    var body = undefined;
+	    var eventDoc = void 0;
+	    var doc = void 0;
+	    var body = void 0;
 	    var target = event.target;
 	    var button = nativeEvent.button;
 	
@@ -24564,7 +24660,7 @@
 	
 	  var isNative = typeof nativeEvent.stopPropagation === 'function' || typeof nativeEvent.cancelBubble === 'boolean';
 	
-	  _EventBaseObject2['default'].call(this);
+	  _EventBaseObject2["default"].call(this);
 	
 	  this.nativeEvent = nativeEvent;
 	
@@ -24582,9 +24678,9 @@
 	  this.isDefaultPrevented = isDefaultPrevented;
 	
 	  var fixFns = [];
-	  var fixFn = undefined;
-	  var l = undefined;
-	  var prop = undefined;
+	  var fixFn = void 0;
+	  var l = void 0;
+	  var prop = void 0;
 	  var props = commonProps.concat();
 	
 	  eventNormalizers.forEach(function (normalizer) {
@@ -24624,9 +24720,9 @@
 	  this.timeStamp = nativeEvent.timeStamp || Date.now();
 	}
 	
-	var EventBaseObjectProto = _EventBaseObject2['default'].prototype;
+	var EventBaseObjectProto = _EventBaseObject2["default"].prototype;
 	
-	(0, _objectAssign2['default'])(DomEventObject.prototype, EventBaseObjectProto, {
+	(0, _objectAssign2["default"])(DomEventObject.prototype, EventBaseObjectProto, {
 	  constructor: DomEventObject,
 	
 	  preventDefault: function preventDefault() {
@@ -24642,7 +24738,6 @@
 	
 	    EventBaseObjectProto.preventDefault.call(this);
 	  },
-	
 	  stopPropagation: function stopPropagation() {
 	    var e = this.nativeEvent;
 	
@@ -24658,24 +24753,24 @@
 	  }
 	});
 	
-	exports['default'] = DomEventObject;
+	exports["default"] = DomEventObject;
 	module.exports = exports['default'];
 
 /***/ },
 /* 206 */
 /***/ function(module, exports) {
 
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
 	/**
 	 * @ignore
 	 * base event object for custom and dom event.
 	 * @author yiminghe@gmail.com
 	 */
 	
-	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
 	function returnFalse() {
 	  return false;
 	}
@@ -24704,18 +24799,15 @@
 	  preventDefault: function preventDefault() {
 	    this.isDefaultPrevented = returnTrue;
 	  },
-	
 	  stopPropagation: function stopPropagation() {
 	    this.isPropagationStopped = returnTrue;
 	  },
-	
 	  stopImmediatePropagation: function stopImmediatePropagation() {
 	    this.isImmediatePropagationStopped = returnTrue;
 	    // fixed 1.2
 	    // call stopPropagation implicitly
 	    this.stopPropagation();
 	  },
-	
 	  halt: function halt(immediate) {
 	    if (immediate) {
 	      this.stopImmediatePropagation();
@@ -24727,7 +24819,7 @@
 	};
 	
 	exports["default"] = EventBaseObject;
-	module.exports = exports["default"];
+	module.exports = exports['default'];
 
 /***/ },
 /* 207 */
@@ -25189,7 +25281,8 @@
 /* 318 */,
 /* 319 */,
 /* 320 */,
-/* 321 */
+/* 321 */,
+/* 322 */
 /***/ function(module, exports, __webpack_require__, __webpack_module_template_argument_0__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**

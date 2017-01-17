@@ -75,6 +75,9 @@
 .rc-table td {
   padding: 16px 8px;
 }
+.rc-table .rc-table-fixed-end {
+  overflow: hidden;
+}
 .rc-table-expand-icon-col {
   width: 10px;
 }
@@ -154,12 +157,24 @@ tr.rc-table-expanded-row:hover {
   position: absolute;
   top: 0;
   overflow: hidden;
-  z-index: 1;
+  z-index: 2;
 }
 .rc-table-fixed-left table,
 .rc-table-fixed-right table {
   width: auto;
   background: #fff;
+}
+.rc-table-fixed-end {
+  position: absolute;
+  bottom: 0;
+  overflow: auto;
+  z-index: 1;
+  box-shadow: 0px -4px 4px rgba(100, 100, 100, 0.1);
+  background: #fff;
+  left: 0;
+}
+.rc-table.rc-table-scroll-y-position-bottom .rc-table-fixed-end {
+  box-shadow: none;
 }
 .rc-table-fixed-left {
   left: 0;
