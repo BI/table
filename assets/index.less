@@ -93,6 +93,11 @@
   th, td {
     padding: @vertical-padding @horizontal-padding;
   }
+
+  .@{tablePrefixCls}-fixed-end {
+    overflow: hidden;
+  }
+
 }
 
 .@{tablePrefixCls} {
@@ -169,11 +174,25 @@
     position: absolute;
     top: 0;
     overflow: hidden;
-    z-index: 1;
+    z-index: 2;
     table {
       width: auto;
       background: #fff;
     }
+  }
+
+  &-fixed-end {
+    position: absolute;
+    bottom: 0;
+    overflow: auto;
+    z-index: 1;
+    box-shadow: 0px -4px 4px rgba(100, 100, 100, 0.1);
+    background: #fff;
+    left: 0;
+  }
+
+  &&-scroll-y-position-bottom &-fixed-end {
+    box-shadow: none;
   }
 
   &-fixed-left {

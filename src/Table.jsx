@@ -15,6 +15,7 @@ const Table = React.createClass({
     expandedRowKeys: PropTypes.array,
     defaultExpandedRowKeys: PropTypes.array,
     useFixedHeader: PropTypes.bool,
+    fixedEndRowCount: PropTypes.number,
     columns: PropTypes.array,
     prefixCls: PropTypes.string,
     bodyStyle: PropTypes.object,
@@ -83,11 +84,22 @@ const Table = React.createClass({
     } else {
       expandedRowKeys = props.expandedRowKeys || props.defaultExpandedRowKeys;
     }
+
+    let end = props.fixedEndRowCount;
+    let data = props.data;
+    let endData = null;
+
+    if (end && end > 0) {
+      endData = props.data.slice(-end);
+    }
+
     return {
       expandedRowKeys,
-      data: props.data,
+      data,
+      endData,
       currentHoverKey: null,
       scrollPosition: 'left',
+      scrollYPosition: 'top',
       fixedColumnsHeadRowsHeight: [],
       fixedColumnsBodyRowsHeight: [],
     };
@@ -105,9 +117,18 @@ const Table = React.createClass({
   },
 
   componentWillReceiveProps(nextProps) {
-    if ('data' in nextProps) {
+    if ('data' in nextProps || 'fixedEndRowCount' in nextProps) {
+      let end = nextProps.fixedEndRowCount;
+      let data = nextProps.data;
+      let endData = null;
+
+      if (end && end > 0) {
+        endData = nextProps.data.slice(-end);
+      }
+
       this.setState({
-        data: nextProps.data,
+        data,
+        endData,
       });
       if (!nextProps.data || nextProps.data.length === 0) {
         this.resetScrollY();
@@ -378,8 +399,8 @@ const Table = React.createClass({
     return rst;
   },
 
-  getRows(columns, fixed) {
-    return this.getRowsByData(this.state.data, true, 0, columns, fixed);
+  getRows(columns, fixed, isEnd = false) {
+    return this.getRowsByData(isEnd ? this.state.endData : this.state.data, true, 0, columns, fixed);
   },
 
   getColGroup(columns, fixed) {
@@ -423,14 +444,17 @@ const Table = React.createClass({
   getTable(options = {}) {
     const { columns, fixed } = options;
     const { prefixCls, scroll = {}, getBodyWrapper } = this.props;
-    let { useFixedHeader } = this.props;
+    let { useFixedHeader, useFixedFooter } = this.props;
     const bodyStyle = { ...this.props.bodyStyle };
     const headStyle = {};
+    let endStyle = {}
 
     let tableClassName = '';
     if (scroll.x || fixed) {
       tableClassName = `${prefixCls}-fixed`;
       bodyStyle.overflowX = bodyStyle.overflowX || 'auto';
+
+      endStyle = { ...bodyStyle };
     }
 
     if (scroll.y) {
@@ -447,12 +471,22 @@ const Table = React.createClass({
       // Add negative margin bottom for scroll bar overflow bug
       const scrollbarWidth = measureScrollbar();
       if (scrollbarWidth > 0) {
-        (fixed ? bodyStyle : headStyle).marginBottom = `-${scrollbarWidth}px`;
-        (fixed ? bodyStyle : headStyle).paddingBottom = '0px';
+        const marginBottom = `-${scrollbarWidth}px`;
+        const paddingBottom = '0px';
+
+        if(fixed) {
+          bodyStyle.marginBottom = marginBottom;
+          bodyStyle.paddingBottom = paddingBottom;
+        } else {
+          headStyle.marginBottom = marginBottom;
+          headStyle.paddingBottom = paddingBottom;
+
+          endStyle.right = `${scrollbarWidth}px`
+        }
       }
     }
 
-    const renderTable = (hasHead = true, hasBody = true) => {
+    const renderTable = (hasHead = true, hasBody = true, hasEnd = false) => {
       const tableStyle = {};
       if (!fixed && scroll.x) {
         // not set width, then use content fixed width
@@ -464,7 +498,7 @@ const Table = React.createClass({
       }
       const tableBody = hasBody ? getBodyWrapper(
         <tbody className={`${prefixCls}-tbody`}>
-          {this.getRows(columns, fixed)}
+          {this.getRows(columns, fixed, hasEnd)}
         </tbody>
       ) : null;
       return (
@@ -506,6 +540,23 @@ const Table = React.createClass({
       </div>
     );
 
+    let endTable;
+
+    if (this.state.endData) {
+      endTable = (
+        <div
+          className={`${prefixCls}-fixed-end`}
+          ref={fixed ? null : 'endTable'}
+          style={endStyle}
+          onMouseOver={this.detectScrollTarget}
+          onTouchStart={this.detectScrollTarget}
+          onScroll={this.handleBodyScroll}
+        >
+          {renderTable(false, true, true)}
+        </div>
+      );
+    }
+
     if (fixed && columns.length) {
       let refName;
       if (columns[0].fixed === 'left' || columns[0].fixed === true) {
@@ -533,7 +584,7 @@ const Table = React.createClass({
       );
     }
 
-    return <span>{headTable}{BodyTable}</span>;
+    return <span>{headTable}{BodyTable}{endTable}</span>;
   },
 
   getTitle() {
@@ -628,13 +679,25 @@ const Table = React.createClass({
       return;
     }
     const { scroll = {} } = this.props;
-    const { headTable, bodyTable, fixedColumnsBodyLeft, fixedColumnsBodyRight } = this.refs;
+    const { headTable, bodyTable, endTable, fixedColumnsBodyLeft, fixedColumnsBodyRight } = this.refs;
     if (scroll.x && e.target.scrollLeft !== this.lastScrollLeft) {
-      if (e.target === bodyTable && headTable) {
-        headTable.scrollLeft = e.target.scrollLeft;
-      } else if (e.target === headTable && bodyTable) {
-        bodyTable.scrollLeft = e.target.scrollLeft;
+      let toUpdate = [headTable, bodyTable, endTable];
+      toUpdate = toUpdate.filter(table => table); // only get tables that exist
+
+      let syncTableScroll = (checkTable) => {
+        toUpdate
+          .filter(table => table !== checkTable)
+          .forEach((u) => { u.scrollLeft = e.target.scrollLeft });
       }
+
+      if (e.target === bodyTable) {
+        syncTableScroll(bodyTable)
+      } else if (e.target === headTable) {
+        syncTableScroll(headTable)
+      } else if (e.target === endTable) {
+        syncTableScroll(endTable)
+      }
+
       if (e.target.scrollLeft === 0) {
         this.setState({ scrollPosition: 'left' });
       } else if (e.target.scrollLeft + 1 >=
@@ -645,6 +708,7 @@ const Table = React.createClass({
         this.setState({ scrollPosition: 'middle' });
       }
     }
+
     if (scroll.y) {
       if (fixedColumnsBodyLeft && e.target !== fixedColumnsBodyLeft) {
         fixedColumnsBodyLeft.scrollTop = e.target.scrollTop;
@@ -654,6 +718,18 @@ const Table = React.createClass({
       }
       if (bodyTable && e.target !== bodyTable) {
         bodyTable.scrollTop = e.target.scrollTop;
+      }
+
+      const scrollbarWidth = measureScrollbar();
+
+      if (e.target.scrollTop === 0) {
+        this.setState({ scrollPosition: 'top' });
+      } else if (e.target.scrollTop - scrollbarWidth + 1 >=
+        e.target.children[0].getBoundingClientRect().height -
+        e.target.getBoundingClientRect().height) {
+        this.setState({ scrollYPosition: 'bottom' });
+      } else if (this.state.scrollYPosition !== 'middle') {
+        this.setState({ scrollYPosition: 'middle' });
       }
     }
     // Remember last scrollLeft for scroll direction detecting.
@@ -678,6 +754,7 @@ const Table = React.createClass({
       className += ` ${prefixCls}-fixed-header`;
     }
     className += ` ${prefixCls}-scroll-position-${this.state.scrollPosition}`;
+    className += ` ${prefixCls}-scroll-y-position-${this.state.scrollYPosition}`;
 
     const isTableScroll = this.columnManager.isAnyColumnsFixed() ||
                           props.scroll.x ||
