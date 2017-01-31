@@ -307,7 +307,7 @@ const Table = React.createClass({
     );
   },
 
-  getRowsByData(data, visible, indent, columns, fixed) {
+  getRowsByData(data, visible, indent, columns, fixed, isEnd = false) {
     const props = this.props;
     const childrenColumnName = props.childrenColumnName;
     const expandedRowRender = props.expandedRowRender;
@@ -340,7 +340,7 @@ const Table = React.createClass({
         onHoverProps.onHover = this.handleRowHover;
       }
 
-      const height = (fixed && fixedColumnsBodyRowsHeight[i]) ?
+      const height = (fixed && fixedColumnsBodyRowsHeight[i] && !isEnd) ?
         fixedColumnsBodyRowsHeight[i] : null;
 
 
@@ -400,7 +400,8 @@ const Table = React.createClass({
   },
 
   getRows(columns, fixed, isEnd = false) {
-    return this.getRowsByData(isEnd ? this.state.endData : this.state.data, true, 0, columns, fixed);
+    let data = isEnd ? this.state.endData : this.state.data
+    return this.getRowsByData(data, true, 0, columns, fixed, isEnd);
   },
 
   getColGroup(columns, fixed) {
