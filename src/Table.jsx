@@ -483,6 +483,7 @@ const Table = React.createClass({
           headStyle.paddingBottom = paddingBottom;
 
           endStyle.right = `${scrollbarWidth}px`
+          if (!scroll.x) endStyle.bottom = `-${scrollbarWidth}px`
         }
       }
     }
@@ -724,7 +725,7 @@ const Table = React.createClass({
       const scrollbarWidth = measureScrollbar();
 
       if (e.target.scrollTop === 0) {
-        this.setState({ scrollPosition: 'top' });
+        this.setState({ scrollYPosition: 'top' });
       } else if (e.target.scrollTop - scrollbarWidth + 1 >=
         e.target.children[0].getBoundingClientRect().height -
         e.target.getBoundingClientRect().height) {
