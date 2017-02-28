@@ -469,6 +469,10 @@ const Table = React.createClass({
       bodyStyle.overflowY = bodyStyle.overflowY || 'scroll';
       useFixedHeader = true;
 
+      if (!scroll.x && fixed) {
+        endStyle.bottom = `-${scrollbarWidth}px`
+      }
+
       // Add negative margin bottom for scroll bar overflow bug
       const scrollbarWidth = measureScrollbar();
       if (scrollbarWidth > 0) {
@@ -478,7 +482,6 @@ const Table = React.createClass({
         if(fixed) {
           bodyStyle.marginBottom = marginBottom;
           bodyStyle.paddingBottom = paddingBottom;
-          if (!scroll.x) endStyle.bottom = `-${scrollbarWidth}px`
         } else {
           headStyle.marginBottom = marginBottom;
           headStyle.paddingBottom = paddingBottom;
