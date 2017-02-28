@@ -478,12 +478,12 @@ const Table = React.createClass({
         if(fixed) {
           bodyStyle.marginBottom = marginBottom;
           bodyStyle.paddingBottom = paddingBottom;
+          if (!scroll.x) endStyle.bottom = `-${scrollbarWidth}px`
         } else {
           headStyle.marginBottom = marginBottom;
           headStyle.paddingBottom = paddingBottom;
 
           endStyle.right = `${scrollbarWidth}px`
-          if (!scroll.x) endStyle.bottom = `-${scrollbarWidth}px`
         }
       }
     }
