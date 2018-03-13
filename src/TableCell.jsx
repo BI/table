@@ -1,8 +1,9 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import get from 'lodash.get';
 
-const TableCell = React.createClass({
-  propTypes: {
+class TableCell extends React.Component {
+  static propTypes = {
     record: PropTypes.object,
     prefixCls: PropTypes.string,
     index: PropTypes.number,
@@ -10,17 +11,20 @@ const TableCell = React.createClass({
     indentSize: PropTypes.number,
     column: PropTypes.object,
     expandIcon: PropTypes.node,
-  },
-  isInvalidRenderCellText(text) {
+  };
+
+  isInvalidRenderCellText = (text) => {
     return text && !React.isValidElement(text) &&
       Object.prototype.toString.call(text) === '[object Object]';
-  },
-  handleClick(e) {
+  };
+
+  handleClick = (e) => {
     const { record, column: { onCellClick } } = this.props;
     if (onCellClick) {
       onCellClick(record, e);
     }
-  },
+  };
+
   render() {
     const { record, indentSize, prefixCls, indent,
             index, expandIcon, column } = this.props;
@@ -77,7 +81,7 @@ const TableCell = React.createClass({
         {text}
       </td>
     );
-  },
-});
+  }
+}
 
 export default TableCell;

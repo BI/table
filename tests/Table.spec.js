@@ -63,8 +63,8 @@ describe('Table', () => {
 
   it('sets row refs', () => {
     const wrapper = mount(createTable({ rowRef: (record) => record.key }));
-    expect(wrapper.instance().refs.key0).toBe(wrapper.find('TableRow').at(0).node);
-    expect(wrapper.instance().refs.key1).toBe(wrapper.find('TableRow').at(1).node);
+    expect(wrapper.instance().refs.key0).toBe(wrapper.find('TableRow').at(0).instance());
+    expect(wrapper.instance().refs.key1).toBe(wrapper.find('TableRow').at(1).instance());
   });
 
   describe('rowKey', () => {

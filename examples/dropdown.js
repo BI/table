@@ -18,35 +18,37 @@ for (let i = 0; i < 10; i++) {
   });
 }
 
-const Test = React.createClass({
-  getInitialState() {
+class Test extends React.Component {
+  constructor(props) {
+    super(props);
     this.filters = [];
-    return {
+
+    this.state = {
       visible: false,
     };
-  },
+  }
 
-  handleVisibleChange(visible) {
+  handleVisibleChange = (visible) => {
     this.setState({ visible });
-  },
+  };
 
-  handleSelect(selected) {
+  handleSelect = (selected) => {
     this.filters.push(selected);
-  },
+  };
 
-  handleDeselect(key) {
+  handleDeselect = (key) => {
     const index = this.filters.indexOf(key);
     if (index !== -1) {
       this.filters.splice(index, 1);
     }
-  },
+  };
 
-  confirmFilter() {
+  confirmFilter = () => {
     console.log(this.filters.join(','));
     this.setState({
       visible: false,
     });
-  },
+  };
 
   render() {
     const menu = (
@@ -100,8 +102,8 @@ const Test = React.createClass({
         rowKey={record => record.key}
       />
     );
-  },
-});
+  }
+}
 
 ReactDOM.render(
   <div>
