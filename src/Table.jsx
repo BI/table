@@ -306,7 +306,7 @@ class Table extends React.Component {
     );
   };
 
-  getRowsByData = (data, visible, indent, columns, fixed) => {
+  getRowsByData = (data, visible, indent, columns, fixed, isEnd = false) => {
     const props = this.props;
     const childrenColumnName = props.childrenColumnName;
     const expandedRowRender = props.expandedRowRender;
@@ -339,7 +339,7 @@ class Table extends React.Component {
         onHoverProps.onHover = this.handleRowHover;
       }
 
-      const height = (fixed && fixedColumnsBodyRowsHeight[i]) ?
+      const height = (fixed && fixedColumnsBodyRowsHeight[i] && !isEnd) ?
         fixedColumnsBodyRowsHeight[i] : null;
 
 
@@ -399,8 +399,8 @@ class Table extends React.Component {
   };
 
   getRows = (columns, fixed, isEnd = false) => {
-    return this.getRowsByData(isEnd ? this.state.endData :
-      this.state.data, true, 0, columns, fixed);
+    const data = isEnd ? this.state.endData : this.state.data;
+    return this.getRowsByData(data, true, 0, columns, fixed, isEnd);
   };
 
   getColGroup = (columns, fixed) => {
@@ -470,6 +470,10 @@ class Table extends React.Component {
 
       // Add negative margin bottom for scroll bar overflow bug
       const scrollbarWidth = measureScrollbar();
+      if (!scroll.x && fixed) {
+        endStyle.bottom = `-${scrollbarWidth}px`;
+      }
+
       if (scrollbarWidth > 0) {
         const marginBottom = `-${scrollbarWidth}px`;
         const paddingBottom = '0px';
@@ -729,7 +733,7 @@ class Table extends React.Component {
       const scrollbarWidth = measureScrollbar();
 
       if (e.target.scrollTop === 0) {
-        this.setState({ scrollPosition: 'top' });
+        this.setState({ scrollYPosition: 'top' });
       } else if (e.target.scrollTop - scrollbarWidth + 1 >=
         e.target.children[0].getBoundingClientRect().height -
         e.target.getBoundingClientRect().height) {
