@@ -1,10 +1,11 @@
 /* eslint-disable no-console,func-names,react/no-multi-comp */
 const React = require('react');
 const ReactDOM = require('react-dom');
+const PropTypes = require('prop-types');
 const Table = require('rc-table');
 require('rc-table/assets/index.less');
 
-const CheckBox = React.createClass({
+class CheckBox extends React.Component {
   render() {
     const props = this.props;
     return (
@@ -13,39 +14,40 @@ const CheckBox = React.createClass({
         {props.id}
       </label>
     );
-  },
-});
+  }
+}
 
-const MyTable = React.createClass({
-  getInitialState() {
-    const props = this.props;
-    return {
+class MyTable extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
       data: props.data,
     };
-  },
+  }
 
-  remove(index) {
+  remove = (index) => {
     const rows = this.state.data;
     rows.splice(index, 1);
     this.setState({
       data: rows,
     });
-  },
+  };
 
-  handleClick(index) {
+  handleClick = (index) => {
     const self = this;
     return () => {
       self.remove(index);
     };
-  },
+  };
 
-  checkbox(a) {
+  checkbox = (a) => {
     return <CheckBox id={a} />;
-  },
+  };
 
-  renderAction(o, row, index) {
+  renderAction = (o, row, index) => {
     return <a href="#" onClick={this.handleClick(index)}>Delete</a>;
-  },
+  };
 
   render() {
     const state = this.state;
@@ -58,8 +60,12 @@ const MyTable = React.createClass({
     return (
       <Table columns={columns} data={state.data} className="table" rowKey={record => record.a} />
     );
-  },
-});
+  }
+}
+
+MyTable.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.object),
+};
 
 const data = [{ a: '123' }, { a: 'cdd', b: 'edd' }, { a: '1333', c: 'eee', d: 2 }];
 

@@ -56,29 +56,35 @@
   "jest": {
     "collectCoverageFrom": [
       "src/**/*"
+    ],
+    "setupTestFrameworkScriptFile": "<rootDir>/test-setup.js",
+    "setupFiles": [
+      "raf/polyfill"
     ]
   },
   "dependencies": {
     "lodash.get": "^4.4.2",
     "rc-util": "3.x",
     "shallowequal": "^0.2.2",
-    "warning": "^3.0.0"
+    "warning": "^3.0.0",
+    "prop-types": "^15.6.1"
   },
   "devDependencies": {
     "coveralls": "^2.11.15",
-    "enzyme": "^2.7.0",
-    "enzyme-to-json": "^1.4.5",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
+    "enzyme-to-json": "^3.3.1",
     "expect.js": "~0.3.1",
     "jest": "^18.1.0",
     "jquery": "^1.11.2",
     "pre-commit": "1.x",
+    "raf": "^3.4.0",
     "rc-animate": "^2.3.0",
     "rc-dropdown": "~1.4.10",
     "rc-menu": "~4.13.0",
     "rc-tools": "^5.9.2",
-    "react": "^15.2.1",
-    "react-addons-test-utils": "^15.3.1",
-    "react-dom": "^15.2.1"
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0"
   },
   "pre-commit": [
     "lint"

@@ -1,6 +1,6 @@
 exports[`Table dataIndex render text by path 1`] = `
 <div
-  class="rc-table rc-table-scroll-position-left">
+  class="rc-table rc-table-scroll-position-left rc-table-scroll-y-position-top">
   <div
     class="rc-table-content">
     <div
@@ -11,8 +11,12 @@ exports[`Table dataIndex render text by path 1`] = `
           <table
             class="">
             <colgroup>
-              <col />
-              <col />
+              <col>
+                
+              </col>
+              <col>
+                
+              </col>
             </colgroup>
             <thead
               class="rc-table-thead">
@@ -35,7 +39,9 @@ exports[`Table dataIndex render text by path 1`] = `
                   class="">
                   <span
                     class="rc-table-row-indent indent-level-0"
-                    style="padding-left:0px;" />
+                    style="padding-left:0px">
+                    
+                  </span>
                   John
                 </td>
                 <td
@@ -49,7 +55,9 @@ exports[`Table dataIndex render text by path 1`] = `
                   class="">
                   <span
                     class="rc-table-row-indent indent-level-0"
-                    style="padding-left:0px;" />
+                    style="padding-left:0px">
+                    
+                  </span>
                   Terry
                 </td>
                 <td
@@ -68,7 +76,7 @@ exports[`Table dataIndex render text by path 1`] = `
 
 exports[`Table renders colSpan correctly 1`] = `
 <div
-  class="rc-table rc-table-scroll-position-left">
+  class="rc-table rc-table-scroll-position-left rc-table-scroll-y-position-top">
   <div
     class="rc-table-content">
     <div
@@ -79,8 +87,12 @@ exports[`Table renders colSpan correctly 1`] = `
           <table
             class="">
             <colgroup>
-              <col />
-              <col />
+              <col>
+                
+              </col>
+              <col>
+                
+              </col>
             </colgroup>
             <thead
               class="rc-table-thead">
@@ -101,7 +113,9 @@ exports[`Table renders colSpan correctly 1`] = `
                   colspan="2">
                   <span
                     class="rc-table-row-indent indent-level-0"
-                    style="padding-left:0px;" />
+                    style="padding-left:0px">
+                    
+                  </span>
                   John
                 </td>
               </tr>
@@ -111,7 +125,9 @@ exports[`Table renders colSpan correctly 1`] = `
                   class="">
                   <span
                     class="rc-table-row-indent indent-level-0"
-                    style="padding-left:0px;" />
+                    style="padding-left:0px">
+                    
+                  </span>
                   Terry
                 </td>
                 <td
@@ -130,7 +146,7 @@ exports[`Table renders colSpan correctly 1`] = `
 
 exports[`Table renders column correctly 1`] = `
 <div
-  class="rc-table rc-table-scroll-position-left">
+  class="rc-table rc-table-scroll-position-left rc-table-scroll-y-position-top">
   <div
     class="rc-table-content">
     <div
@@ -142,7 +158,9 @@ exports[`Table renders column correctly 1`] = `
             class="">
             <colgroup>
               <col
-                style="width:100px;min-width:100px;" />
+                style="width:100px;min-width:100px">
+                
+              </col>
             </colgroup>
             <thead
               class="rc-table-thead">
@@ -161,7 +179,9 @@ exports[`Table renders column correctly 1`] = `
                   class="name-class">
                   <span
                     class="rc-table-row-indent indent-level-0"
-                    style="padding-left:0px;" />
+                    style="padding-left:0px">
+                    
+                  </span>
                   Lucy
                 </td>
               </tr>
@@ -171,7 +191,9 @@ exports[`Table renders column correctly 1`] = `
                   class="name-class">
                   <span
                     class="rc-table-row-indent indent-level-0"
-                    style="padding-left:0px;" />
+                    style="padding-left:0px">
+                    
+                  </span>
                   Jack
                 </td>
               </tr>
@@ -186,7 +208,7 @@ exports[`Table renders column correctly 1`] = `
 
 exports[`Table renders correctly 1`] = `
 <div
-  class="test-prefix test-class-name test-prefix-scroll-position-left">
+  class="test-prefix test-class-name test-prefix-scroll-position-left test-prefix-scroll-y-position-top">
   <div
     class="test-prefix-content">
     <div
@@ -197,7 +219,9 @@ exports[`Table renders correctly 1`] = `
           <table
             class="">
             <colgroup>
-              <col />
+              <col>
+                
+              </col>
             </colgroup>
             <thead
               class="test-prefix-thead">
@@ -216,7 +240,9 @@ exports[`Table renders correctly 1`] = `
                   class="">
                   <span
                     class="test-prefix-row-indent indent-level-0"
-                    style="padding-left:0px;" />
+                    style="padding-left:0px">
+                    
+                  </span>
                   Lucy
                 </td>
               </tr>
@@ -226,7 +252,9 @@ exports[`Table renders correctly 1`] = `
                   class="">
                   <span
                     class="test-prefix-row-indent indent-level-0"
-                    style="padding-left:0px;" />
+                    style="padding-left:0px">
+                    
+                  </span>
                   Jack
                 </td>
               </tr>
@@ -241,7 +269,7 @@ exports[`Table renders correctly 1`] = `
 
 exports[`Table renders custom cell correctly 1`] = `
 <div
-  class="rc-table rc-table-scroll-position-left">
+  class="rc-table rc-table-scroll-position-left rc-table-scroll-y-position-top">
   <div
     class="rc-table-content">
     <div
@@ -252,7 +280,9 @@ exports[`Table renders custom cell correctly 1`] = `
           <table
             class="">
             <colgroup>
-              <col />
+              <col>
+                
+              </col>
             </colgroup>
             <thead
               class="rc-table-thead">
@@ -271,7 +301,9 @@ exports[`Table renders custom cell correctly 1`] = `
                   class="">
                   <span
                     class="rc-table-row-indent indent-level-0"
-                    style="padding-left:0px;" />
+                    style="padding-left:0px">
+                    
+                  </span>
                   <p>
                     Lucy
                   </p>
@@ -283,7 +315,9 @@ exports[`Table renders custom cell correctly 1`] = `
                   class="">
                   <span
                     class="rc-table-row-indent indent-level-0"
-                    style="padding-left:0px;" />
+                    style="padding-left:0px">
+                    
+                  </span>
                   <p>
                     Jack
                   </p>
@@ -300,7 +334,7 @@ exports[`Table renders custom cell correctly 1`] = `
 
 exports[`Table renders fixed header correctly 1`] = `
 <div
-  class="rc-table rc-table-fixed-header rc-table-scroll-position-left">
+  class="rc-table rc-table-fixed-header rc-table-scroll-position-left rc-table-scroll-y-position-top">
   <div
     class="rc-table-content">
     <div
@@ -311,7 +345,9 @@ exports[`Table renders fixed header correctly 1`] = `
           <table
             class="">
             <colgroup>
-              <col />
+              <col>
+                
+              </col>
             </colgroup>
             <thead
               class="rc-table-thead">
@@ -329,7 +365,9 @@ exports[`Table renders fixed header correctly 1`] = `
           <table
             class="">
             <colgroup>
-              <col />
+              <col>
+                
+              </col>
             </colgroup>
             <tbody
               class="rc-table-tbody">
@@ -339,7 +377,9 @@ exports[`Table renders fixed header correctly 1`] = `
                   class="">
                   <span
                     class="rc-table-row-indent indent-level-0"
-                    style="padding-left:0px;" />
+                    style="padding-left:0px">
+                    
+                  </span>
                   Lucy
                 </td>
               </tr>
@@ -349,7 +389,9 @@ exports[`Table renders fixed header correctly 1`] = `
                   class="">
                   <span
                     class="rc-table-row-indent indent-level-0"
-                    style="padding-left:0px;" />
+                    style="padding-left:0px">
+                    
+                  </span>
                   Jack
                 </td>
               </tr>
@@ -364,7 +406,7 @@ exports[`Table renders fixed header correctly 1`] = `
 
 exports[`Table renders footer correctly 1`] = `
 <div
-  class="rc-table rc-table-scroll-position-left">
+  class="rc-table rc-table-scroll-position-left rc-table-scroll-y-position-top">
   <div
     class="rc-table-content">
     <div
@@ -375,7 +417,9 @@ exports[`Table renders footer correctly 1`] = `
           <table
             class="">
             <colgroup>
-              <col />
+              <col>
+                
+              </col>
             </colgroup>
             <thead
               class="rc-table-thead">
@@ -394,7 +438,9 @@ exports[`Table renders footer correctly 1`] = `
                   class="">
                   <span
                     class="rc-table-row-indent indent-level-0"
-                    style="padding-left:0px;" />
+                    style="padding-left:0px">
+                    
+                  </span>
                   Lucy
                 </td>
               </tr>
@@ -404,7 +450,9 @@ exports[`Table renders footer correctly 1`] = `
                   class="">
                   <span
                     class="rc-table-row-indent indent-level-0"
-                    style="padding-left:0px;" />
+                    style="padding-left:0px">
+                    
+                  </span>
                   Jack
                 </td>
               </tr>
@@ -425,7 +473,7 @@ exports[`Table renders footer correctly 1`] = `
 
 exports[`Table renders rowSpan correctly 1`] = `
 <div
-  class="rc-table rc-table-scroll-position-left">
+  class="rc-table rc-table-scroll-position-left rc-table-scroll-y-position-top">
   <div
     class="rc-table-content">
     <div
@@ -436,8 +484,12 @@ exports[`Table renders rowSpan correctly 1`] = `
           <table
             class="">
             <colgroup>
-              <col />
-              <col />
+              <col>
+                
+              </col>
+              <col>
+                
+              </col>
             </colgroup>
             <thead
               class="rc-table-thead">
@@ -460,7 +512,9 @@ exports[`Table renders rowSpan correctly 1`] = `
                   class="">
                   <span
                     class="rc-table-row-indent indent-level-0"
-                    style="padding-left:0px;" />
+                    style="padding-left:0px">
+                    
+                  </span>
                   John
                 </td>
                 <td
@@ -475,7 +529,9 @@ exports[`Table renders rowSpan correctly 1`] = `
                   class="">
                   <span
                     class="rc-table-row-indent indent-level-0"
-                    style="padding-left:0px;" />
+                    style="padding-left:0px">
+                    
+                  </span>
                   Terry
                 </td>
               </tr>
@@ -490,7 +546,7 @@ exports[`Table renders rowSpan correctly 1`] = `
 
 exports[`Table renders table body to the wrapper 1`] = `
 <div
-  class="rc-table rc-table-scroll-position-left">
+  class="rc-table rc-table-scroll-position-left rc-table-scroll-y-position-top">
   <div
     class="rc-table-content">
     <div
@@ -501,7 +557,9 @@ exports[`Table renders table body to the wrapper 1`] = `
           <table
             class="">
             <colgroup>
-              <col />
+              <col>
+                
+              </col>
             </colgroup>
             <thead
               class="rc-table-thead">
@@ -520,7 +578,9 @@ exports[`Table renders table body to the wrapper 1`] = `
                   class="">
                   <span
                     class="rc-table-row-indent indent-level-0"
-                    style="padding-left:0px;" />
+                    style="padding-left:0px">
+                    
+                  </span>
                   Lucy
                 </td>
               </tr>
@@ -530,7 +590,9 @@ exports[`Table renders table body to the wrapper 1`] = `
                   class="">
                   <span
                     class="rc-table-row-indent indent-level-0"
-                    style="padding-left:0px;" />
+                    style="padding-left:0px">
+                    
+                  </span>
                   Jack
                 </td>
               </tr>
@@ -545,7 +607,7 @@ exports[`Table renders table body to the wrapper 1`] = `
 
 exports[`Table renders title correctly 1`] = `
 <div
-  class="rc-table rc-table-scroll-position-left">
+  class="rc-table rc-table-scroll-position-left rc-table-scroll-y-position-top">
   <div
     class="rc-table-title">
     <p>
@@ -562,7 +624,9 @@ exports[`Table renders title correctly 1`] = `
           <table
             class="">
             <colgroup>
-              <col />
+              <col>
+                
+              </col>
             </colgroup>
             <thead
               class="rc-table-thead">
@@ -581,7 +645,9 @@ exports[`Table renders title correctly 1`] = `
                   class="">
                   <span
                     class="rc-table-row-indent indent-level-0"
-                    style="padding-left:0px;" />
+                    style="padding-left:0px">
+                    
+                  </span>
                   Lucy
                 </td>
               </tr>
@@ -591,7 +657,9 @@ exports[`Table renders title correctly 1`] = `
                   class="">
                   <span
                     class="rc-table-row-indent indent-level-0"
-                    style="padding-left:0px;" />
+                    style="padding-left:0px">
+                    
+                  </span>
                   Jack
                 </td>
               </tr>
@@ -606,7 +674,7 @@ exports[`Table renders title correctly 1`] = `
 
 exports[`Table renders without header 1`] = `
 <div
-  class="rc-table rc-table-scroll-position-left">
+  class="rc-table rc-table-scroll-position-left rc-table-scroll-y-position-top">
   <div
     class="rc-table-content">
     <div
@@ -617,7 +685,9 @@ exports[`Table renders without header 1`] = `
           <table
             class="">
             <colgroup>
-              <col />
+              <col>
+                
+              </col>
             </colgroup>
             <tbody
               class="rc-table-tbody">
@@ -627,7 +697,9 @@ exports[`Table renders without header 1`] = `
                   class="">
                   <span
                     class="rc-table-row-indent indent-level-0"
-                    style="padding-left:0px;" />
+                    style="padding-left:0px">
+                    
+                  </span>
                   Lucy
                 </td>
               </tr>
@@ -637,7 +709,9 @@ exports[`Table renders without header 1`] = `
                   class="">
                   <span
                     class="rc-table-row-indent indent-level-0"
-                    style="padding-left:0px;" />
+                    style="padding-left:0px">
+                    
+                  </span>
                   Jack
                 </td>
               </tr>
@@ -652,7 +726,7 @@ exports[`Table renders without header 1`] = `
 
 exports[`Table scroll renders scroll.x is a number 1`] = `
 <div
-  class="rc-table rc-table-scroll-position-left">
+  class="rc-table rc-table-scroll-position-left rc-table-scroll-y-position-top">
   <div
     class="rc-table-content">
     <div
@@ -660,12 +734,14 @@ exports[`Table scroll renders scroll.x is a number 1`] = `
       <span>
         <div
           class="rc-table-body"
-          style="overflow-x:auto;">
+          style="overflow-x:auto">
           <table
             class="rc-table-fixed"
-            style="width:200px;">
+            style="width:200px">
             <colgroup>
-              <col />
+              <col>
+                
+              </col>
             </colgroup>
             <thead
               class="rc-table-thead">
@@ -684,7 +760,9 @@ exports[`Table scroll renders scroll.x is a number 1`] = `
                   class="">
                   <span
                     class="rc-table-row-indent indent-level-0"
-                    style="padding-left:0px;" />
+                    style="padding-left:0px">
+                    
+                  </span>
                   Lucy
                 </td>
               </tr>
@@ -694,7 +772,9 @@ exports[`Table scroll renders scroll.x is a number 1`] = `
                   class="">
                   <span
                     class="rc-table-row-indent indent-level-0"
-                    style="padding-left:0px;" />
+                    style="padding-left:0px">
+                    
+                  </span>
                   Jack
                 </td>
               </tr>
@@ -709,7 +789,7 @@ exports[`Table scroll renders scroll.x is a number 1`] = `
 
 exports[`Table scroll renders scroll.x is true 1`] = `
 <div
-  class="rc-table rc-table-scroll-position-left">
+  class="rc-table rc-table-scroll-position-left rc-table-scroll-y-position-top">
   <div
     class="rc-table-content">
     <div
@@ -717,12 +797,14 @@ exports[`Table scroll renders scroll.x is true 1`] = `
       <span>
         <div
           class="rc-table-body"
-          style="overflow-x:auto;">
+          style="overflow-x:auto">
           <table
             class="rc-table-fixed"
-            style="table-layout:fixed;">
+            style="table-layout:fixed">
             <colgroup>
-              <col />
+              <col>
+                
+              </col>
             </colgroup>
             <thead
               class="rc-table-thead">
@@ -741,7 +823,9 @@ exports[`Table scroll renders scroll.x is true 1`] = `
                   class="">
                   <span
                     class="rc-table-row-indent indent-level-0"
-                    style="padding-left:0px;" />
+                    style="padding-left:0px">
+                    
+                  </span>
                   Lucy
                 </td>
               </tr>
@@ -751,7 +835,9 @@ exports[`Table scroll renders scroll.x is true 1`] = `
                   class="">
                   <span
                     class="rc-table-row-indent indent-level-0"
-                    style="padding-left:0px;" />
+                    style="padding-left:0px">
+                    
+                  </span>
                   Jack
                 </td>
               </tr>
@@ -766,7 +852,7 @@ exports[`Table scroll renders scroll.x is true 1`] = `
 
 exports[`Table scroll renders scroll.y is a number 1`] = `
 <div
-  class="rc-table rc-table-fixed-header rc-table-scroll-position-left">
+  class="rc-table rc-table-fixed-header rc-table-scroll-position-left rc-table-scroll-y-position-top">
   <div
     class="rc-table-content">
     <div
@@ -777,7 +863,9 @@ exports[`Table scroll renders scroll.y is a number 1`] = `
           <table
             class="">
             <colgroup>
-              <col />
+              <col>
+                
+              </col>
             </colgroup>
             <thead
               class="rc-table-thead">
@@ -792,11 +880,13 @@ exports[`Table scroll renders scroll.y is a number 1`] = `
         </div>
         <div
           class="rc-table-body"
-          style="max-height:200px;overflow-y:scroll;">
+          style="max-height:200px;overflow-y:scroll">
           <table
             class="">
             <colgroup>
-              <col />
+              <col>
+                
+              </col>
             </colgroup>
             <tbody
               class="rc-table-tbody">
@@ -806,7 +896,9 @@ exports[`Table scroll renders scroll.y is a number 1`] = `
                   class="">
                   <span
                     class="rc-table-row-indent indent-level-0"
-                    style="padding-left:0px;" />
+                    style="padding-left:0px">
+                    
+                  </span>
                   Lucy
                 </td>
               </tr>
@@ -816,7 +908,9 @@ exports[`Table scroll renders scroll.y is a number 1`] = `
                   class="">
                   <span
                     class="rc-table-row-indent indent-level-0"
-                    style="padding-left:0px;" />
+                    style="padding-left:0px">
+                    
+                  </span>
                   Jack
                 </td>
               </tr>

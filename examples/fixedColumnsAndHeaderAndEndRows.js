@@ -34,6 +34,12 @@ const data = [
 ReactDOM.render(
   <div>
     <h2>Fixed columns and header</h2>
-    <Table columns={columns} scroll={{ x: true, y: 400 }} useHeaderBoxShadow data={data} style={{ width: 800 }} fixedEndRowCount={2} />
+    <Table
+      columns={columns}
+      scroll={{ x: true, y: 400 }}
+      useHeaderBoxShadow data={data}
+      style={{ width: 800 }}
+      fixedEndRowCount={2}
+    />
   </div>
 , document.getElementById('__react-content'));

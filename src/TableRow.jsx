@@ -1,9 +1,10 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import TableCell from './TableCell';
 import ExpandIcon from './ExpandIcon';
 
-const TableRow = React.createClass({
-  propTypes: {
+class TableRow extends React.Component {
+  static propTypes = {
     onDestroy: PropTypes.func,
     onRowClick: PropTypes.func,
     onRowDoubleClick: PropTypes.func,
@@ -29,24 +30,20 @@ const TableRow = React.createClass({
     expandIconAsCell: PropTypes.bool,
     expandRowByClick: PropTypes.bool,
     store: PropTypes.object.isRequired,
-  },
+  };
 
-  getDefaultProps() {
-    return {
-      onRowClick() {},
-      onRowDoubleClick() {},
-      onDestroy() {},
-      expandIconColumnIndex: 0,
-      expandRowByClick: false,
-      onHover() {},
-    };
-  },
+  static defaultProps = {
+    onRowClick() {},
+    onRowDoubleClick() {},
+    onDestroy() {},
+    expandIconColumnIndex: 0,
+    expandRowByClick: false,
+    onHover() {},
+  };
 
-  getInitialState() {
-    return {
-      hovered: false,
-    };
-  },
+  state = {
+    hovered: false,
+  };
 
   componentDidMount() {
     const { store, hoverKey } = this.props;
@@ -57,7 +54,7 @@ const TableRow = React.createClass({
         this.setState({ hovered: false });
       }
     });
-  },
+  }
 
   componentWillUnmount() {
     const { record, onDestroy, index } = this.props;
@@ -65,9 +62,9 @@ const TableRow = React.createClass({
     if (this.unsubscribe) {
       this.unsubscribe();
     }
-  },
+  }
 
-  onRowClick(event) {
+  onRowClick = (event) => {
     const {
       record,
       index,
@@ -81,22 +78,22 @@ const TableRow = React.createClass({
       onExpand(!expanded, record, index);
     }
     onRowClick(record, index, event);
-  },
+  };
 
-  onRowDoubleClick(event) {
+  onRowDoubleClick = (event) => {
     const { record, index, onRowDoubleClick } = this.props;
     onRowDoubleClick(record, index, event);
-  },
+  };
 
-  onMouseEnter() {
+  onMouseEnter = () => {
     const { onHover, hoverKey } = this.props;
     onHover(true, hoverKey);
-  },
+  };
 
-  onMouseLeave() {
+  onMouseLeave = () => {
     const { onHover, hoverKey } = this.props;
     onHover(false, hoverKey);
-  },
+  };
 
   render() {
     const {
@@ -167,7 +164,7 @@ const TableRow = React.createClass({
         {cells}
       </tr>
     );
-  },
-});
+  }
+}
 
 export default TableRow;
